@@ -11,7 +11,8 @@ The same steps as the prompt in the template's `README.md`:
 
 1. Ask only for the folder, propose `~/projects/<name>`; never overwrite an
    existing one.
-2. `gh repo clone Take-Group/tg-boiler-small <folder> -- --depth 1`, then in
+2. `git clone --depth 1 https://github.com/Take-Group/tg-boiler-small.git <folder>`
+   (public repo, no login), then in
    the folder remove `.git` and `git init`, so the app is not a copy of the
    template (with the template as origin, the mode would be TEMPLATE).
 3. `bun install`, `bunx playwright install chromium`.
