@@ -1,0 +1,68 @@
+---
+/**
+ * Every page renders inside this layout. It owns <head>: title, description,
+ * canonical, Open Graph, robots, JSON-LD, the ClientRouter and GTM. The body
+ * is the page's own. A shared header and footer, once the app has them, go
+ * around the slot.
+ *
+ * ClientRouter makes the site navigate like a single-page app: links swap
+ * the page without a full reload. Scripts that must run on every page listen
+ * to `astro:page-load`, not DOMContentLoaded.
+ */
+import { ClientRouter } from 'astro:transitions';
+import '@/styles/globals.css';
+import GoogleTagManager from '@/components/GoogleTagManager.astro';
+import { SITE } from '@/config/site';
+import { absoluteUrl, organizationSchema, websiteSchema } from '@/lib/seo';
+
+interface Props {
+  // Full <title>, 30-60 characters, the main phrase first.
+  title: string;
+  // Meta description, 70-155 characters.
+  description?: string;
+  // Open Graph image path in public/, 1200x630.
+  image?: string;
+  // Keeps this page out of Google and drops its canonical (404, thank-you pages).
+  noindex?: boolean;
+  // Page-specific JSON-LD objects (Article, Service, ...). Organization and WebSite are always added.
+  schemas?: Record<string, unknown>[];
+}
+
+const { title, description = SITE.description, image, noindex = false, schemas = [] } = Astro.props;
+// The static build reports "/index.html" and "/cennik.html"; public URLs have no extension.
+const path = Astro.url.pathname.replace(/(\/index)?\.html$/, '') || '/';
+const canonical = noindex ? null : absoluteUrl(path);
+const robots = SITE.indexable && !noindex ? 'index, follow' : 'noindex, nofollow';
+const jsonLd = [organizationSchema(), websiteSchema(), ...schemas];
+---
+
+<!doctype html>
+<html lang={SITE.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content={robots} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <link rel="sitemap" href="/sitemap.xml" />
+    <meta name="theme-color" content={SITE.themeColor} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content={SITE.locale} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    {image && <meta property="og:image" content={absoluteUrl(image)} />}
+    <meta name="twitter:card" content={image ? 'summary_large_image' : 'summary'} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <ClientRouter />
+    <GoogleTagManager part="head" />
+  </head>
+  <body class="min-h-screen bg-white antialiased">
+    <GoogleTagManager part="body" />
+    <slot />
+  </body>
+</html>

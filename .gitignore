@@ -1,0 +1,28 @@
+# dependencies
+node_modules
+
+# build
+dist/
+.astro/
+
+# env
+.env
+.env.*
+!.env.example
+
+# screenshots and other agent output (bun run shot)
+.cache/
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# typescript
+*.tsbuildinfo
+
+# local agent settings
+.claude/settings.local.json

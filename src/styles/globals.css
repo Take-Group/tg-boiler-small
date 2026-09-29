@@ -1,0 +1,12 @@
+@import 'tailwindcss';
+
+/*
+ * The app's design tokens go here: colors, font, radius. The template ships
+ * none on purpose, so every app gets its own look (page-design skill).
+ * Components use only these tokens, never raw colors.
+ */
+
+/* Template splash only. The new-app skill deletes it together with the splash page. */
+@theme {
+  --color-template: #7c3aed;
+}
