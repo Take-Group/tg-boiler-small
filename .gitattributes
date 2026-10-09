@@ -1,0 +1,4 @@
+# LF everywhere. Git for Windows defaults to core.autocrlf=true, which checks
+# skills out with CRLF, and the harness check reads their frontmatter with \n.
+# Only Windows checkouts change; macOS, Linux and WSL2 already get LF.
+* text=auto eol=lf

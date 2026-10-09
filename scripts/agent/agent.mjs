@@ -139,7 +139,9 @@ function checkHarness() {
     }
   }
   const discovery = path.join(ROOT, '.claude/skills');
-  if (!fs.existsSync(discovery) || !fs.lstatSync(discovery).isSymbolicLink() || fs.readlinkSync(discovery) !== '../.agents/skills') {
+  // On Windows readlink returns the target with backslashes.
+  const target = () => fs.readlinkSync(discovery).replaceAll('\\', '/');
+  if (!fs.existsSync(discovery) || !fs.lstatSync(discovery).isSymbolicLink() || target() !== '../.agents/skills') {
     failures.push('.claude/skills must be a symlink to ../.agents/skills');
   }
 
