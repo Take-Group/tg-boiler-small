@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.3.5",
+    "astro": "^7.3.8",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "tailwind-merge": "^3.7.0",
@@ -30,5 +30,9 @@
     "@types/node": "^26.6.3",
     "playwright": "^1.63.0",
     "typescript": "^6.0.3"
+  },
+  "overrides": {
+    "http-cache-semantics": "4.3.0",
+    "source-map-js": "1.2.2"
   }
 }
